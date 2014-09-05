@@ -12,6 +12,7 @@ var mainState = {
         game.physics.startSystem(Phaser.Physics.ARCADE);
 
         this.bird = this.game.add.sprite(100,125, 'bird');
+        this.bird.anchor.setTo(-0.2, 0.5);
 
         game.physics.arcade.enable(this.bird);
         this.bird.body.gravity.y = 1000;
@@ -31,10 +32,16 @@ var mainState = {
     update: function() {
         if(this.bird.inWorld == false)
             this.restartGame();
+        if(this.bird.angle < 20) {
+            this.bird.angle += 1;
+        }
         game.physics.arcade.overlap(this.bird, this.pipes, this.restartGame, null, this);
     },
 
     jump: function() {
+        var animation = game.add.tween(this.bird);
+        animation.to({angle: -20}, 100);
+        animation.start();
         this.bird.body.velocity.y = -350;
     },
 
